@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using tabuleiro;
-using Xadrez;
+using Xadrez_Console.tabuleiro;
+using Xadrez_Console.Xadrez;
 
 namespace Xadrez_Console
 {
@@ -19,10 +19,10 @@ namespace Xadrez_Console
             Console.WriteLine();
             Console.WriteLine($"Turno {partida.Turno}");
 
-            if (!partida.terminada)
+            if (!partida.Terminada)
             {
                  Console.WriteLine($"Aguardando jogada: {partida.JogadorAtual}");
-                 if (partida.xeque)
+                 if (partida.Xeque)
                  {
                     Console.WriteLine("XEQUE");
                  }
@@ -38,12 +38,12 @@ namespace Xadrez_Console
         {
             Console.WriteLine("Pecas capturadas: ");
             Console.Write("Brancas: ");
-            ImprimirConjuntos(partida.pecasCapturadas(Cor.Branca));
+            ImprimirConjuntos(partida.PecasCapturadas(Cor.Branca));
             Console.WriteLine();
             Console.Write("Pretas: ");
             ConsoleColor aux = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Yellow;
-            ImprimirConjuntos(partida.pecasCapturadas(Cor.Preta));
+            ImprimirConjuntos(partida.PecasCapturadas(Cor.Preta));
             Console.ForegroundColor = aux;
             Console.WriteLine();
 
@@ -61,10 +61,10 @@ namespace Xadrez_Console
 
         public static void ImprimirTabuleiro(Tabuleiro tab)
         {
-            for(int i=0; i<tab.linhas; i++)
+            for(int i=0; i<tab.Linhas; i++)
             {
                 Console.Write(8 - i + " ");
-                for (int j=0; j<tab.colunas; j++)
+                for (int j=0; j<tab.Colunas; j++)
                 {
                     ImprimirPeca(tab.Peca(i, j));              
                     
@@ -78,10 +78,10 @@ namespace Xadrez_Console
         {
             ConsoleColor fundoOriginal = Console.BackgroundColor;
             ConsoleColor fundoAlterado = ConsoleColor.DarkGray;
-            for (int i = 0; i < tab.linhas; i++)
+            for (int i = 0; i < tab.Linhas; i++)
             {
                 Console.Write(8 - i + " ");
-                for (int j = 0; j < tab.colunas; j++)
+                for (int j = 0; j < tab.Colunas; j++)
                 {
                     if (PosicoesPossiveis[i, j])
                     {
@@ -118,7 +118,7 @@ namespace Xadrez_Console
             else
             {
 
-                if (peca.cor == Cor.Branca)
+                if (peca.Cor == Cor.Branca)
                 {
                     Console.Write(peca);
                 }

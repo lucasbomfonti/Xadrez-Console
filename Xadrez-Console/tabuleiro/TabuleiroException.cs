@@ -1,7 +1,6 @@
 ﻿using System;
 
-
-namespace tabuleiro
+namespace Xadrez_Console.tabuleiro
 {
     class TabuleiroException : Exception
     {

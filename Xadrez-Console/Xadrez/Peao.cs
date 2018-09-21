@@ -1,7 +1,7 @@
 ﻿
-using tabuleiro;
+using Xadrez_Console.tabuleiro;
 
-namespace Xadrez
+namespace Xadrez_Console.Xadrez
 {
     class Peao : Peca
     {
@@ -18,97 +18,97 @@ namespace Xadrez
          
         private bool ExisteInimigo(Posicao pos)
         {
-            Peca p = tab.Peca(pos);
-            return p != null && p.cor != cor;
+            Peca p = Tab.Peca(pos);
+            return p != null && p.Cor != Cor;
         }
 
         private bool Livre(Posicao pos)
         {
-            return tab.Peca(pos) == null;
+            return Tab.Peca(pos) == null;
         }
 
 
         public override bool[,] MovimentosPossiveis()
         {
-            bool[,] mat = new bool[tab.linhas, tab.colunas];
+            bool[,] mat = new bool[Tab.Linhas, Tab.Colunas];
 
             Posicao pos = new Posicao(0, 0);
 
-          if (cor == Cor.Branca)
+          if (Cor == Cor.Branca)
             {
-                pos.DefinirValores(posicao.linha - 1, posicao.coluna);
-                if (tab.PosicaoValida(pos) && Livre(pos))
+                pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna);
+                if (Tab.PosicaoValida(pos) && Livre(pos))
                 {
-                    mat[pos.linha, pos.coluna] = true;
+                    mat[pos.Linha, pos.Coluna] = true;
                 }
-                pos.DefinirValores(posicao.linha - 2, posicao.coluna);
-                if (tab.PosicaoValida(pos) && Livre(pos) && qteMovimetos == 0)
+                pos.DefinirValores(Posicao.Linha - 2, Posicao.Coluna);
+                if (Tab.PosicaoValida(pos) && Livre(pos) && QteMovimetos == 0)
                 {
-                    mat[pos.linha, pos.coluna] = true;
+                    mat[pos.Linha, pos.Coluna] = true;
                 }
-                pos.DefinirValores(posicao.linha - 1, posicao.coluna - 1);
-                if (tab.PosicaoValida(pos) && ExisteInimigo(pos))
+                pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna - 1);
+                if (Tab.PosicaoValida(pos) && ExisteInimigo(pos))
                 {
-                    mat[pos.linha, pos.coluna] = true;
+                    mat[pos.Linha, pos.Coluna] = true;
                 }
-                pos.DefinirValores(posicao.linha - 1, posicao.coluna + 1);
-                if (tab.PosicaoValida(pos) && ExisteInimigo(pos))
+                pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna + 1);
+                if (Tab.PosicaoValida(pos) && ExisteInimigo(pos))
                 {
-                    mat[pos.linha, pos.coluna] = true;
+                    mat[pos.Linha, pos.Coluna] = true;
                 }
 
                 // jogada especial en passant
-                if (posicao.linha == 3)
+                if (Posicao.Linha == 3)
                 {
-                    Posicao esquerda = new Posicao(posicao.linha, posicao.coluna - 1);
-                    if (tab.PosicaoValida(esquerda) && ExisteInimigo(esquerda) 
-                        && tab.Peca(esquerda) == partida.vuneralvelEnPassant)
+                    Posicao esquerda = new Posicao(Posicao.Linha, Posicao.Coluna - 1);
+                    if (Tab.PosicaoValida(esquerda) && ExisteInimigo(esquerda) 
+                        && Tab.Peca(esquerda) == partida.VuneralvelEnPassant)
                     {
-                        mat[esquerda.linha - 1, esquerda.coluna] = true;
+                        mat[esquerda.Linha - 1, esquerda.Coluna] = true;
                     }
-                    Posicao direita = new Posicao(posicao.linha, posicao.coluna + 1);
-                    if (tab.PosicaoValida(direita) && ExisteInimigo(direita)
-                        && tab.Peca(direita) == partida.vuneralvelEnPassant)
+                    Posicao direita = new Posicao(Posicao.Linha, Posicao.Coluna + 1);
+                    if (Tab.PosicaoValida(direita) && ExisteInimigo(direita)
+                        && Tab.Peca(direita) == partida.VuneralvelEnPassant)
                     {
-                        mat[direita.linha - 1, direita.coluna] = true;
+                        mat[direita.Linha - 1, direita.Coluna] = true;
                     }
                 }
             } else
             {
-                pos.DefinirValores(posicao.linha + 1, posicao.coluna);
-                if (tab.PosicaoValida(pos) && Livre(pos))
+                pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna);
+                if (Tab.PosicaoValida(pos) && Livre(pos))
                 {
-                    mat[pos.linha, pos.coluna] = true;
+                    mat[pos.Linha, pos.Coluna] = true;
                 }
-                pos.DefinirValores(posicao.linha + 2, posicao.coluna);
-                if (tab.PosicaoValida(pos) && Livre(pos) && qteMovimetos == 0)
+                pos.DefinirValores(Posicao.Linha + 2, Posicao.Coluna);
+                if (Tab.PosicaoValida(pos) && Livre(pos) && QteMovimetos == 0)
                 {
-                    mat[pos.linha, pos.coluna] = true;
+                    mat[pos.Linha, pos.Coluna] = true;
                 }
-                pos.DefinirValores(posicao.linha + 1, posicao.coluna - 1);
-                if (tab.PosicaoValida(pos) && ExisteInimigo(pos))
+                pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna - 1);
+                if (Tab.PosicaoValida(pos) && ExisteInimigo(pos))
                 {
-                    mat[pos.linha, pos.coluna] = true;
+                    mat[pos.Linha, pos.Coluna] = true;
                 }
-                pos.DefinirValores(posicao.linha + 1, posicao.coluna + 1);
-                if (tab.PosicaoValida(pos) && ExisteInimigo(pos))
+                pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna + 1);
+                if (Tab.PosicaoValida(pos) && ExisteInimigo(pos))
                 {
-                    mat[pos.linha, pos.coluna] = true;
+                    mat[pos.Linha, pos.Coluna] = true;
                 }
                 // jogada especial en passant
-                if (posicao.linha == 4)
+                if (Posicao.Linha == 4)
                 {
-                    Posicao esquerda = new Posicao(posicao.linha, posicao.coluna - 1);
-                    if (tab.PosicaoValida(esquerda) && ExisteInimigo(esquerda)
-                        && tab.Peca(esquerda) == partida.vuneralvelEnPassant)
+                    Posicao esquerda = new Posicao(Posicao.Linha, Posicao.Coluna - 1);
+                    if (Tab.PosicaoValida(esquerda) && ExisteInimigo(esquerda)
+                        && Tab.Peca(esquerda) == partida.VuneralvelEnPassant)
                     { 
-                        mat[esquerda.linha + 1, esquerda.coluna] = true;
+                        mat[esquerda.Linha + 1, esquerda.Coluna] = true;
                     }
-                    Posicao direita = new Posicao(posicao.linha, posicao.coluna + 1);
-                    if (tab.PosicaoValida(direita) && ExisteInimigo(direita)
-                        && tab.Peca(direita) == partida.vuneralvelEnPassant)
+                    Posicao direita = new Posicao(Posicao.Linha, Posicao.Coluna + 1);
+                    if (Tab.PosicaoValida(direita) && ExisteInimigo(direita)
+                        && Tab.Peca(direita) == partida.VuneralvelEnPassant)
                     {
-                        mat[direita.linha + 1, direita.coluna] = true;
+                        mat[direita.Linha + 1, direita.Coluna] = true;
                     }
                 }
             }

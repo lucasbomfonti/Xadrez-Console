@@ -1,7 +1,7 @@
 ﻿
-using tabuleiro;
+using Xadrez_Console.tabuleiro;
 
-namespace Xadrez
+namespace Xadrez_Console.Xadrez
 {
     class Rei : Peca
     {
@@ -18,102 +18,102 @@ namespace Xadrez
 
         private bool PodeMover(Posicao pos)
         {
-            Peca p = tab.Peca(pos);
-            return p == null || p.cor != cor;
+            Peca p = Tab.Peca(pos);
+            return p == null || p.Cor != Cor;
         }
 
         private bool TesteTorreParaRoque(Posicao pos)
         {
-            Peca p = tab.Peca(pos);
-            return p != null && p is Torre && p.cor == cor && p.qteMovimetos == 0;
+            Peca p = Tab.Peca(pos);
+            return p != null && p is Torre && p.Cor == Cor && p.QteMovimetos == 0;
         }
         public override bool[,] MovimentosPossiveis()
         {
-            bool[,] mat = new bool[tab.linhas, tab.colunas];
+            bool[,] mat = new bool[Tab.Linhas, Tab.Colunas];
 
             Posicao pos = new Posicao(0, 0);
 
             // acima
-            pos.DefinirValores(posicao.linha - 1, posicao.coluna);
-            if (tab.PosicaoValida(pos) && PodeMover(pos))
+            pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna);
+            if (Tab.PosicaoValida(pos) && PodeMover(pos))
             {
-                mat[pos.linha, pos.coluna] = true;
+                mat[pos.Linha, pos.Coluna] = true;
             }
 
             // ne
-            pos.DefinirValores(posicao.linha - 1, posicao.coluna + 1);
-            if (tab.PosicaoValida(pos) && PodeMover(pos))
+            pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna + 1);
+            if (Tab.PosicaoValida(pos) && PodeMover(pos))
             {
-                mat[pos.linha, pos.coluna] = true;
+                mat[pos.Linha, pos.Coluna] = true;
             }
 
             // direita
-            pos.DefinirValores(posicao.linha , posicao.coluna + 1);
-            if (tab.PosicaoValida(pos) && PodeMover(pos))
+            pos.DefinirValores(Posicao.Linha , Posicao.Coluna + 1);
+            if (Tab.PosicaoValida(pos) && PodeMover(pos))
             {
-                mat[pos.linha, pos.coluna] = true;
+                mat[pos.Linha, pos.Coluna] = true;
             }
 
             // se
-            pos.DefinirValores(posicao.linha +1, posicao.coluna + 1);
-            if (tab.PosicaoValida(pos) && PodeMover(pos))
+            pos.DefinirValores(Posicao.Linha +1, Posicao.Coluna + 1);
+            if (Tab.PosicaoValida(pos) && PodeMover(pos))
             {
-                mat[pos.linha, pos.coluna] = true;
+                mat[pos.Linha, pos.Coluna] = true;
             }
 
             // abaixo
-            pos.DefinirValores(posicao.linha + 1, posicao.coluna);
-            if (tab.PosicaoValida(pos) && PodeMover(pos))
+            pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna);
+            if (Tab.PosicaoValida(pos) && PodeMover(pos))
             {
-                mat[pos.linha, pos.coluna] = true;
+                mat[pos.Linha, pos.Coluna] = true;
             }
 
             // so
-            pos.DefinirValores(posicao.linha + 1, posicao.coluna - 1);
-            if (tab.PosicaoValida(pos) && PodeMover(pos))
+            pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna - 1);
+            if (Tab.PosicaoValida(pos) && PodeMover(pos))
             {
-                mat[pos.linha, pos.coluna] = true;
+                mat[pos.Linha, pos.Coluna] = true;
             }
 
             // esquerda
-            pos.DefinirValores(posicao.linha , posicao.coluna -1);
-            if (tab.PosicaoValida(pos) && PodeMover(pos))
+            pos.DefinirValores(Posicao.Linha , Posicao.Coluna -1);
+            if (Tab.PosicaoValida(pos) && PodeMover(pos))
             {
-                mat[pos.linha, pos.coluna] = true;
+                mat[pos.Linha, pos.Coluna] = true;
             }
             // no
-            pos.DefinirValores(posicao.linha - 1, posicao.coluna - 1);
-            if (tab.PosicaoValida(pos) && PodeMover(pos))
+            pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna - 1);
+            if (Tab.PosicaoValida(pos) && PodeMover(pos))
             {
-                mat[pos.linha, pos.coluna] = true;
+                mat[pos.Linha, pos.Coluna] = true;
             }
 
 
             // jogada especial roque
 
-            if (qteMovimetos == 0 && !partida.xeque)
+            if (QteMovimetos == 0 && !partida.Xeque)
             {
                 // roque pequeno 
-                Posicao PosT1 = new Posicao(posicao.linha, posicao.coluna + 3);
-                if (TesteTorreParaRoque(PosT1))
+                Posicao posT1 = new Posicao(Posicao.Linha, Posicao.Coluna + 3);
+                if (TesteTorreParaRoque(posT1))
                 {
-                    Posicao p1 = new Posicao(posicao.linha, posicao.coluna + 1);
-                    Posicao p2 = new Posicao(posicao.linha, posicao.coluna + 1);
-                    if (tab.Peca(p1) == null && tab.Peca(p2) == null)
+                    Posicao p1 = new Posicao(Posicao.Linha, Posicao.Coluna + 1);
+                    Posicao p2 = new Posicao(Posicao.Linha, Posicao.Coluna + 1);
+                    if (Tab.Peca(p1) == null && Tab.Peca(p2) == null)
                     {
-                        mat[posicao.linha, posicao.coluna + 2] = true;
+                        mat[Posicao.Linha, Posicao.Coluna + 2] = true;
                     }
                 }
                 // roque grande 
-                Posicao PosT2 = new Posicao(posicao.linha, posicao.coluna + -4);
-                if (TesteTorreParaRoque(PosT1))
+                var posicao = new Posicao(Posicao.Linha, Posicao.Coluna + -4);
+                if (TesteTorreParaRoque(posT1))
                 {
-                    Posicao p1 = new Posicao(posicao.linha, posicao.coluna - 1);
-                    Posicao p2 = new Posicao(posicao.linha, posicao.coluna - 2);
-                    Posicao p3 = new Posicao(posicao.linha, posicao.coluna - 3);
-                    if (tab.Peca(p1) == null && tab.Peca(p2) == null && tab.Peca(p3) == null)
+                    Posicao p1 = new Posicao(Posicao.Linha, Posicao.Coluna - 1);
+                    Posicao p2 = new Posicao(Posicao.Linha, Posicao.Coluna - 2);
+                    Posicao p3 = new Posicao(Posicao.Linha, Posicao.Coluna - 3);
+                    if (Tab.Peca(p1) == null && Tab.Peca(p2) == null && Tab.Peca(p3) == null)
                     {
-                        mat[posicao.linha, posicao.coluna - 2] = true;
+                        mat[Posicao.Linha, Posicao.Coluna - 2] = true;
                     }
                 }
             }

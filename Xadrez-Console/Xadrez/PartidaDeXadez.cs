@@ -1,27 +1,27 @@
 ﻿using System.Collections.Generic;
-using tabuleiro;
+using Xadrez_Console.tabuleiro;
 
-namespace Xadrez
+namespace Xadrez_Console.Xadrez
 {
     class PartidaDeXadez
     {
         public Tabuleiro Tab { get; private set; }
         public int Turno { get; private set; }
         public Cor JogadorAtual { get; private set; }
-        public bool terminada { get; private set; }
+        public bool Terminada { get; private set; }
         private HashSet<Peca> pecas;
         private HashSet<Peca> capturadas;
-        public bool xeque { get; private set; }
-        public Peca vuneralvelEnPassant;
+        public bool Xeque { get; private set; }
+        public Peca VuneralvelEnPassant;
 
         public PartidaDeXadez()
         {
             Tab = new Tabuleiro(8, 8);
             Turno = 1;
             JogadorAtual = Cor.Branca;
-            terminada = false;
-            xeque = false;
-            vuneralvelEnPassant = null;
+            Terminada = false;
+            Xeque = false;
+            VuneralvelEnPassant = null;
             pecas = new HashSet<Peca>();
             capturadas = new HashSet<Peca>();
             ColocarPecas();
@@ -31,28 +31,28 @@ namespace Xadrez
         {
             Peca p = Tab.RetirarPeca(origem);
             p.IncrementarQteMovimentos();
-            Peca PecaCapturada = Tab.RetirarPeca(destino);
+            Peca pecaCapturada = Tab.RetirarPeca(destino);
             Tab.ColocarPeca(p, destino);
-            if (PecaCapturada != null)
+            if (pecaCapturada != null)
             {
-                capturadas.Add(PecaCapturada);
+                capturadas.Add(pecaCapturada);
             }
 
             // roque pequeno
-            if (p is Rei && destino.coluna == origem.coluna + 2)
+            if (p is Rei && destino.Coluna == origem.Coluna + 2)
             {
-                Posicao origemT = new Posicao(origem.linha, origem.coluna + 3);
-                Posicao destinoT = new Posicao(origem.linha, origem.coluna + 1);
+                Posicao origemT = new Posicao(origem.Linha, origem.Coluna + 3);
+                Posicao destinoT = new Posicao(origem.Linha, origem.Coluna + 1);
                 Peca T = Tab.RetirarPeca(origemT);
                 T.IncrementarQteMovimentos();
                 Tab.ColocarPeca(T, destinoT);
             }
 
             // roque grande
-            if (p is Rei && destino.coluna == origem.coluna - 2)
+            if (p is Rei && destino.Coluna == origem.Coluna - 2)
             {
-                Posicao origemT = new Posicao(origem.linha, origem.coluna - 4);
-                Posicao destinoT = new Posicao(origem.linha, origem.coluna - 1);
+                Posicao origemT = new Posicao(origem.Linha, origem.Coluna - 4);
+                Posicao destinoT = new Posicao(origem.Linha, origem.Coluna - 1);
                 Peca T = Tab.RetirarPeca(origemT);
                 T.IncrementarQteMovimentos();
                 Tab.ColocarPeca(T, destinoT);
@@ -61,50 +61,50 @@ namespace Xadrez
             // en passant
             if (p is Peao)
             {
-                if (origem.coluna != destino.coluna && PecaCapturada == null)
+                if (origem.Coluna != destino.Coluna && pecaCapturada == null)
                 {
                     Posicao posP;
-                    if (p.cor == Cor.Branca)
+                    if (p.Cor == Cor.Branca)
                     {
-                        posP = new Posicao(destino.linha + 1, destino.coluna);
+                        posP = new Posicao(destino.Linha + 1, destino.Coluna);
                     }
                     else
                     {
-                        posP = new Posicao(destino.linha - 1, destino.coluna);
+                        posP = new Posicao(destino.Linha - 1, destino.Coluna);
                     }
-                    PecaCapturada = Tab.RetirarPeca(posP);
-                    capturadas.Add(PecaCapturada);
+                    pecaCapturada = Tab.RetirarPeca(posP);
+                    capturadas.Add(pecaCapturada);
                 }
             }
-            return PecaCapturada;
+            return pecaCapturada;
         }
 
-        public void DesfazMovimento(Posicao origem, Posicao destino, Peca PecaCapturada)
+        public void DesfazMovimento(Posicao origem, Posicao destino, Peca pecaCapturada)
         {
             Peca p = Tab.RetirarPeca(destino);
             p.DecrementarQteMovimentos();
-            if (PecaCapturada != null)
+            if (pecaCapturada != null)
             {
-                Tab.ColocarPeca(PecaCapturada, destino);
-                capturadas.Remove(PecaCapturada);
+                Tab.ColocarPeca(pecaCapturada, destino);
+                capturadas.Remove(pecaCapturada);
             }
             Tab.ColocarPeca(p, origem);
 
             // roque pequeno
-            if (p is Rei && destino.coluna == origem.coluna + 2)
+            if (p is Rei && destino.Coluna == origem.Coluna + 2)
             {
-                Posicao origemT = new Posicao(origem.linha, origem.coluna + 3);
-                Posicao destinoT = new Posicao(origem.linha, origem.coluna + 1);
+                var posicao = new Posicao(origem.Linha, origem.Coluna + 3);
+                Posicao destinoT = new Posicao(origem.Linha, origem.Coluna + 1);
                 Peca T = Tab.RetirarPeca(destinoT);
                 T.DecrementarQteMovimentos();
                 Tab.ColocarPeca(T, destinoT);
             }
 
             // roque grande
-            if (p is Rei && destino.coluna == origem.coluna - 2)
+            if (p is Rei && destino.Coluna == origem.Coluna - 2)
             {
-                Posicao origemT = new Posicao(origem.linha, origem.coluna - 4);
-                Posicao destinoT = new Posicao(origem.linha, origem.coluna - 1);
+                Posicao origemT = new Posicao(origem.Linha, origem.Coluna - 4);
+                Posicao destinoT = new Posicao(origem.Linha, origem.Coluna - 1);
                 Peca T = Tab.RetirarPeca(origemT);
                 T.IncrementarQteMovimentos();
                 Tab.ColocarPeca(T, destinoT);
@@ -113,17 +113,17 @@ namespace Xadrez
             // en passant
             if (p is Peao)
             {
-                if (origem.coluna != destino.coluna && PecaCapturada == vuneralvelEnPassant)
+                if (origem.Coluna != destino.Coluna && pecaCapturada == VuneralvelEnPassant)
                 {
                     Peca peao = Tab.RetirarPeca(destino);
                     Posicao posP;
-                    if (p.cor == Cor.Branca)
+                    if (p.Cor == Cor.Branca)
                     {
-                        posP = new Posicao(3, destino.coluna);
+                        posP = new Posicao(3, destino.Coluna);
                     }
                     else
                     {
-                        posP = new Posicao(4, destino.coluna);
+                        posP = new Posicao(4, destino.Coluna);
                     }
                     Tab.ColocarPeca(peao, posP);
                 }
@@ -132,11 +132,11 @@ namespace Xadrez
 
         public void RealizarJogada(Posicao origem, Posicao destino)
         {
-          Peca PecaCapturada = ExecutarMovimento(origem, destino);
+          Peca pecaCapturada = ExecutarMovimento(origem, destino);
 
             if (EstaEmXeque(JogadorAtual))
             {
-                DesfazMovimento(origem, destino, PecaCapturada);
+                DesfazMovimento(origem, destino, pecaCapturada);
                 throw new TabuleiroException("Você não pode se colocar em xeque! ");
             }
 
@@ -146,27 +146,27 @@ namespace Xadrez
 
             if (p is Peao)
             {
-                if ((p.cor == Cor.Branca && destino.linha == 0) || (p.cor == Cor.Preta && destino.linha == 7))
+                if ((p.Cor == Cor.Branca && destino.Linha == 0) || (p.Cor == Cor.Preta && destino.Linha == 7))
                 {
                     p = Tab.RetirarPeca(destino);
                     pecas.Remove(p);
-                    Peca dama = new Dama(Tab, p.cor);
+                    Peca dama = new Dama(Tab, p.Cor);
                     Tab.ColocarPeca(dama, destino);
                     pecas.Add(dama);
                 }
             }
             if (EstaEmXeque(advseraria(JogadorAtual)))
             {
-                xeque = true;
+                Xeque = true;
             }
             else
             { 
-                xeque = false;
+                Xeque = false;
             }
 
             if (TesteXequeMate(advseraria(JogadorAtual)))
             {
-                terminada = true;
+                Terminada = true;
             }
             else
             {
@@ -175,13 +175,13 @@ namespace Xadrez
             }
 
             // jogada especial en passant 
-            if (p is Peao && (destino.linha == origem.linha -2) || (destino.linha == origem.linha + 2))
+            if (p is Peao && (destino.Linha == origem.Linha -2) || (destino.Linha == origem.Linha + 2))
             {
-                vuneralvelEnPassant = p;
+                VuneralvelEnPassant = p;
             }
             else
             {
-                vuneralvelEnPassant = null;
+                VuneralvelEnPassant = null;
             }
 
         }
@@ -192,7 +192,7 @@ namespace Xadrez
             if (Tab.Peca(pos) == null)
             {
                 throw new TabuleiroException("Não existe peça na posição de origem escolhida!");
-            }if (JogadorAtual != Tab.Peca(pos).cor)
+            }if (JogadorAtual != Tab.Peca(pos).Cor)
             {
                 throw new TabuleiroException("A peça de origem escolhida não é sua! ");
             }if(!Tab.Peca(pos).ExisteMovimentosPossiveis()) {
@@ -222,12 +222,12 @@ namespace Xadrez
             }
         }
 
-        public HashSet<Peca> pecasCapturadas(Cor cor)
+        public HashSet<Peca> PecasCapturadas(Cor cor)
         {
             HashSet<Peca> aux = new HashSet<Peca>();
             foreach(Peca x in capturadas)
             {
-                if (x.cor == cor)
+                if (x.Cor == cor)
                 {
                     aux.Add(x);
                 }
@@ -240,12 +240,12 @@ namespace Xadrez
             HashSet<Peca> aux = new HashSet<Peca>();
             foreach(Peca x in pecas)
             {
-                if (x.cor == cor)
+                if (x.Cor == cor)
                 {
                     aux.Add(x);
                 }
             }
-            aux.ExceptWith(pecasCapturadas(cor));
+            aux.ExceptWith(PecasCapturadas(cor));
             return aux;
         }
 
@@ -261,7 +261,7 @@ namespace Xadrez
             }
         }
 
-        private Peca rei(Cor cor)
+        private Peca Rei(Cor cor)
         {
             foreach(Peca x in PecasEmJogo(cor))
             {
@@ -275,15 +275,15 @@ namespace Xadrez
 
         public bool EstaEmXeque(Cor cor)
         {
-            Peca R = rei(cor);
-            if (R == null)
+            Peca r = Rei(cor);
+            if (r == null)
             {
                 throw new TabuleiroException("Não tem rei da cor " + cor + " no tabuleiro!");
             }
             foreach(Peca x in PecasEmJogo(advseraria(cor)))
             {
                 bool[,] mat = x.MovimentosPossiveis();
-                if (mat[R.posicao.linha, R.posicao.coluna])
+                if (mat[r.Posicao.Linha, r.Posicao.Coluna])
                 {
                     return true;
                 }
@@ -300,18 +300,18 @@ namespace Xadrez
             foreach(Peca x in PecasEmJogo(cor))
             {
                 bool[,] mat = x.MovimentosPossiveis();
-                for (int i=0; i<Tab.linhas; i++)
+                for (int i=0; i<Tab.Linhas; i++)
                 {
-                    for (int j=0; j<Tab.colunas; j++)
+                    for (int j=0; j<Tab.Colunas; j++)
                     {
                         if (mat[i, j])
                         {
-                            Posicao origem = x.posicao;
+                            Posicao origem = x.Posicao;
                             Posicao destino = new Posicao(i, j);
-                            Peca PecaCapturada = ExecutarMovimento(x.posicao, new Posicao(i, j));
-                            bool TesteXeque = EstaEmXeque(cor);
-                            DesfazMovimento(origem, destino, PecaCapturada);
-                            if (!TesteXeque)
+                            Peca pecaCapturada = ExecutarMovimento(x.Posicao, new Posicao(i, j));
+                            bool testeXeque = EstaEmXeque(cor);
+                            DesfazMovimento(origem, destino, pecaCapturada);
+                            if (!testeXeque)
                             {
                                 return false;
                             }

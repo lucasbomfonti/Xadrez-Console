@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using tabuleiro;
-using Xadrez;
+using Xadrez_Console.tabuleiro;
+using Xadrez_Console.Xadrez;
 
 namespace Xadrez_Console
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             try
             {
                 PartidaDeXadez partida = new PartidaDeXadez();
 
-                while (!partida.terminada)
+                while (!partida.Terminada)
                 {
                     try
                     {
@@ -26,10 +22,10 @@ namespace Xadrez_Console
                         Console.Write("Origem: ");
                         Posicao origem = Tela.lerPosicaoXadrez().ToPosicao();
                         partida.ValidarPosicaoOrigem(origem);
-                        bool[,] PosicoesPossiveis = partida.Tab.Peca(origem).MovimentosPossiveis();
+                        bool[,] posicoesPossiveis = partida.Tab.Peca(origem).MovimentosPossiveis();
 
                         Console.Clear();
-                        Tela.ImprimirTabuleiro(partida.Tab, PosicoesPossiveis);
+                        Tela.ImprimirTabuleiro(partida.Tab, posicoesPossiveis);
                         Console.WriteLine();
                         Console.Write("Destino: ");
                         Posicao destino = Tela.lerPosicaoXadrez().ToPosicao();
